@@ -9,7 +9,9 @@ import fi.dy.masa.malilib.config.options.ConfigHotkey;
 import fi.dy.masa.malilib.config.options.ConfigInteger;
 import fi.dy.masa.malilib.hotkeys.KeyCallbackToggleBooleanConfigWithMessage;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
+import me.aleksilassila.litematica.printer.common.CommonCode;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.client.MinecraftClient;
 
 import java.util.List;
 
@@ -53,5 +55,8 @@ public class LitematicaMixinMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		TOGGLE_PRINTING_MODE.getKeybind().setCallback(new KeyCallbackToggleBooleanConfigWithMessage(PRINT_MODE));
+		System.out.println(CommonCode.ping("PING"));
+				MinecraftClient c = MinecraftClient.getInstance();
+		System.out.println("GAME VERSION FROM COMMON CODE: " + CommonCode.getVersion(c));
 	}
 }
