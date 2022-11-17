@@ -53,14 +53,6 @@ public class PlacementGuide extends PrinterUtils {
         BlockState requiredState = worldSchematic.getBlockState(pos);
         BlockState currentState = world.getBlockState(pos);
 
-        if (requiredState.getBlock() instanceof FluidBlock) {
-            return null;
-        } else if (currentState.getBlock() instanceof FluidBlock) {
-            if (currentState.get(FluidBlock.LEVEL) == 0 && !LitematicaMixinMod.shouldReplaceFluids) {
-                return null;
-            }
-        }
-
         if (!requiredState.canPlaceAt(world, pos)) {
             return null;
         }
@@ -73,7 +65,18 @@ public class PlacementGuide extends PrinterUtils {
             return null;
         }
 
-        if (state == State.MISSING_BLOCK) {
+        boolean fluidToReplace = false;
+        if (requiredState.getBlock() instanceof FluidBlock) {
+            return null;
+        } else if (currentState.getBlock() instanceof FluidBlock) {
+            if (currentState.get(FluidBlock.LEVEL) == 0 && !LitematicaMixinMod.shouldReplaceFluids) {
+                return null;
+            } else {
+                fluidToReplace = true;
+            }
+        }
+
+        if (state == State.MISSING_BLOCK || fluidToReplace == true) {
             switch (requiredType) {
                 case WALLTORCH:
                 case AMETHYST: {
